@@ -52,6 +52,7 @@ func _fixed_process(delta):
 	# Jumping
 	if(on_floor and Input.is_action_pressed("ui_up")):
 		linear_vel.y = -JUMP_SPEED
+		get_node("Sound").play("Jump")
 	
 	# Animation
 	var new_anim = "idle"

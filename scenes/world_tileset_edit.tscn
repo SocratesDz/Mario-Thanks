@@ -241,4 +241,53 @@ texture = ExtResource( 1 )
 region = true
 region_rect = Rect2( 32, 336, 16, 16 )
 
+[node name="Castle Wall" type="Sprite" parent="."]
+
+transform/pos = Vector2( 116, 16 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 208, 0, 16, 16 )
+
+[node name="Castle Door 2" type="Sprite" parent="."]
+
+transform/pos = Vector2( 148, 16 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 192, 16, 16, 16 )
+
+[node name="Castle Door 1" type="Sprite" parent="."]
+
+transform/pos = Vector2( 116, 40 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 208, 16, 16, 16 )
+
+[node name="Castle Window" type="Sprite" parent="."]
+
+transform/pos = Vector2( 148, 40 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 192, 0, 16, 16 )
+
+[node name="Castle Window 2" type="Sprite" parent="."]
+
+transform/pos = Vector2( 180, 40 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 224, 0, 16, 16 )
+
+[node name="Castle Border" type="Sprite" parent="."]
+
+transform/pos = Vector2( 180, 16 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 176, 0, 16, 16 )
+
+[node name="Castle Border 2" type="Sprite" parent="."]
+
+transform/pos = Vector2( 212, 16 )
+texture = ExtResource( 1 )
+region = true
+region_rect = Rect2( 176, 16, 16, 16 )
+
 

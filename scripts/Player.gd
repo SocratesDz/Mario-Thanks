@@ -8,6 +8,7 @@ const JUMP_SPEED = 390
 
 #const GRAVITY = 4000
 const WALK_MAX_SPEED = 100
+const RUN_MAX_SPEED = 200
 const ACCEL = 500
 const FRICTION = -800
 
@@ -18,6 +19,7 @@ var onair_time = 0
 var on_floor = false
 var acc = Vector2()
 var anim_name = "idle"
+var running = false
 
 onready var sprite = get_node("Sprite")
 onready var anim = get_node("Animation")
@@ -41,16 +43,25 @@ func _fixed_process(delta):
 	
 	# Horizontal movement
 	var target_speed = 0
-	if(Input.is_action_pressed("ui_left")):
+	if(Input.is_action_pressed("move_left")):
 		target_speed += -1
-	if(Input.is_action_pressed("ui_right")):
+	if(Input.is_action_pressed("move_right")):
 		target_speed += 1
 	
-	target_speed *= WALK_MAX_SPEED
+	# Running
+	if(Input.is_action_pressed("run_fire")):
+		running = true
+	else: running = false
+	
+	if running:
+		target_speed *= RUN_MAX_SPEED
+	else:
+		target_speed *= WALK_MAX_SPEED
 	linear_vel.x = lerp(linear_vel.x, target_speed, 0.3)
 	
+	
 	# Jumping
-	if(on_floor and Input.is_action_pressed("ui_up")):
+	if(on_floor and Input.is_action_pressed("jump")):
 		linear_vel.y = -JUMP_SPEED
 		get_node("Sound").play("Jump")
 	
@@ -60,6 +71,7 @@ func _fixed_process(delta):
 	if(on_floor):
 		if (abs(linear_vel.x) > 0):
 			new_anim = "walk"
+			if running: new_anim = "run"
 	else:
 		new_anim = "jump"
 		
@@ -71,6 +83,7 @@ func _fixed_process(delta):
 	if (new_anim != anim_name):
 		anim_name = new_anim
 		anim.play(anim_name)
+
 	
 	# I need to check this code later
 	#acc.y = GRAVITY
@@ -91,3 +104,13 @@ func _fixed_process(delta):
 	#	motion = n.slide(motion)
 	#	vel = n.slide(vel)
 	#	move(motion)
+
+
+func _on_Level_End_body_enter( body ):
+	if(body == self):
+		var bg_music = get_tree().get_root().get_node("Level/BG Music")
+		bg_music.stop()
+		var music = get_tree().get_root().get_node("Level/Clear course music")
+		music.play()
+		sprite.hide()
+		set_fixed_process(false)

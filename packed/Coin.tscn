@@ -1,15 +1,21 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
-[ext_resource path="res://assets/images/world_tileset.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Coin.gd" type="Script" id=1]
+[ext_resource path="res://assets/images/world_tileset.png" type="Texture" id=2]
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="CapsuleShape2D" id=4]
 
-resource/name = "blink"
+custom_solver_bias = 0.0
+radius = 5.07927
+height = 7.92539
+
+[sub_resource type="Animation" id=2]
+
 length = 1.0
 loop = true
 step = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:region_rect")
+tracks/0/path = NodePath("sprite:region_rect")
 tracks/0/interp = 1
 tracks/0/imported = false
 tracks/0/keys = {
@@ -19,48 +25,41 @@ tracks/0/keys = {
 "values": [ Rect2( 384, 16, 16, 16 ), Rect2( 400, 16, 16, 16 ), Rect2( 416, 16, 16, 16 ), Rect2( 400, 16, 16, 16 ), Rect2( 384, 16, 16, 16 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=8]
+[node name="Coin" type="Area2D"]
 
-custom_solver_bias = 0.0
-radius = 6.42833
-height = 5.33346
+input/pickable = true
+shapes/0/shape = SubResource( 4 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = ExtResource( 1 )
 
-[node name="Coin" type="Sprite"]
+[node name="sprite" type="Sprite" parent="."]
 
-editor/display_folded = true
-transform/pos = Vector2( 52, 40 )
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 region = true
-region_rect = Rect2( 416, 16, 16, 16 )
+region_rect = Rect2( 384, 16, 16, 16 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="anim" type="AnimationPlayer" parent="."]
 
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/blink = SubResource( 7 )
+anims/blink = SubResource( 2 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
 autoplay = "blink"
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
-input/pickable = false
-shapes/0/shape = SubResource( 8 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
-shapes/0/trigger = false
-collision/layers = 1
-collision/mask = 1
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-
-shape = SubResource( 8 )
+shape = SubResource( 4 )
 trigger = false
 _update_shape_index = 0
+
+[connection signal="body_enter" from="." to="." method="_on_Coin_body_enter"]
 
 

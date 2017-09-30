@@ -6,7 +6,7 @@
 [sub_resource type="SegmentShape2D" id=1]
 
 custom_solver_bias = 0.0
-a = Vector2( 0, 0 )
+a = Vector2( 0.091423, 15.1245 )
 b = Vector2( 0, 160 )
 
 [node name="Flagpole" type="Node2D"]

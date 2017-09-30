@@ -1,17 +1,22 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/images/characters.png" type="Texture" id=2]
 [ext_resource path="res://assets/sounds/Jump.wav" type="Sample" id=3]
+[ext_resource path="res://assets/images/left_touch_button.png" type="Texture" id=4]
+[ext_resource path="res://assets/images/right_touch_button.png" type="Texture" id=5]
+[ext_resource path="res://assets/images/up_touch_button.png" type="Texture" id=6]
+[ext_resource path="res://assets/images/down_touch_button.png" type="Texture" id=7]
+[ext_resource path="res://assets/images/b_touch_button.png" type="Texture" id=8]
+[ext_resource path="res://assets/images/a_touch_button.png" type="Texture" id=9]
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 5.47878, 7.99805 )
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id=2]
 
-resource/name = "dead"
 length = 1.0
 loop = false
 step = 0.1
@@ -26,7 +31,7 @@ tracks/0/keys = {
 "values": [ Rect2( 486, 46, 14, 14 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=3]
 
 length = 1.0
 loop = false
@@ -42,9 +47,8 @@ tracks/0/keys = {
 "values": [ Rect2( 277, 44, 12, 16 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 
-resource/name = "jump"
 length = 1.0
 loop = false
 step = 0.1
@@ -59,9 +63,35 @@ tracks/0/keys = {
 "values": [ Rect2( 355, 44, 16, 16 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=8]
 
-resource/name = "skid"
+resource/name = "run"
+length = 0.5
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.2, 0.4 ),
+"transitions": FloatArray( 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 321, 44, 15, 16 ), Rect2( 307, 44, 11, 16 ), Rect2( 292, 45, 12, 15 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Animation:playback/speed")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ 3.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+
 length = 1.0
 loop = false
 step = 0.1
@@ -76,7 +106,7 @@ tracks/0/keys = {
 "values": [ Rect2( 339, 44, 13, 16 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 
 length = 0.5
 loop = true
@@ -104,7 +134,7 @@ samples/Jump = {
 [node name="Player" type="KinematicBody2D"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 6 )
+shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 shapes/0/trigger = false
 collision/layers = 1
@@ -123,19 +153,20 @@ region_rect = Rect2( 307, 44, 11, 16 )
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/dead = SubResource( 1 )
-anims/idle = SubResource( 2 )
-anims/jump = SubResource( 3 )
-anims/skid = SubResource( 4 )
-anims/walk = SubResource( 5 )
+anims/dead = SubResource( 2 )
+anims/idle = SubResource( 3 )
+anims/jump = SubResource( 4 )
+anims/run = SubResource( 8 )
+anims/skid = SubResource( 5 )
+anims/walk = SubResource( 6 )
 playback/active = true
-playback/speed = 1.0
+playback/speed = 3.0
 blend_times = [  ]
 autoplay = ""
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 
-shape = SubResource( 6 )
+shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
@@ -155,5 +186,96 @@ default/filter/gain = 1.0
 default/reverb_room = 2
 default/reverb_send = 0.0
 default/chorus_send = 0.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+layer = 2
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="LeftButton" type="TouchScreenButton" parent="CanvasLayer"]
+
+transform/pos = Vector2( 10, 210 )
+transform/scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 4 )
+pressed = ExtResource( 4 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "move_left"
+visibility_mode = 1
+
+[node name="RightButton" type="TouchScreenButton" parent="CanvasLayer"]
+
+transform/pos = Vector2( 130, 210 )
+transform/scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 5 )
+pressed = ExtResource( 5 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "move_right"
+visibility_mode = 1
+
+[node name="UpButton" type="TouchScreenButton" parent="CanvasLayer"]
+
+transform/pos = Vector2( 70, 160 )
+transform/scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 6 )
+pressed = ExtResource( 6 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "move_up"
+visibility_mode = 1
+
+[node name="DownButton" type="TouchScreenButton" parent="CanvasLayer"]
+
+transform/pos = Vector2( 70, 260 )
+transform/scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 7 )
+pressed = ExtResource( 7 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "move_down"
+visibility_mode = 1
+
+[node name="BButton" type="TouchScreenButton" parent="CanvasLayer"]
+
+transform/pos = Vector2( 330, 260 )
+transform/scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 8 )
+pressed = ExtResource( 8 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "run_fire"
+visibility_mode = 1
+
+[node name="AButton" type="TouchScreenButton" parent="CanvasLayer"]
+
+transform/pos = Vector2( 420, 260 )
+transform/scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 9 )
+pressed = ExtResource( 9 )
+bitmask = null
+shape = null
+shape_centered = true
+shape_visible = true
+passby_press = false
+action = "jump"
+visibility_mode = 1
 
 
